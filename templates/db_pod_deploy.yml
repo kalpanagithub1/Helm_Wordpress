@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+     name: "mydb"
+     labels:
+       app: mydb
+spec:
+     replicas: 1
+     selector:
+             matchLabels:
+                     app: mydb
+     template:
+             metadata: 
+               labels: 
+                     app: mydb
+             spec:
+                containers:
+                - name: "mydb"
+                  image: mysql:5.7
+                  env: 
+                  - name: MYSQL_ROOT_PASSWORD
+                    valueFrom:
+                        secretKeyRef:
+                          name: mysecret
+                          key: p
+                  - name: MYSQL_USER
+                    valueFrom:
+                        secretKeyRef: 
+                          name: mysecret
+                          key: u
+                  - name: MYSQL_DATABASE
+                    valueFrom:
+                        secretKeyRef:
+                          name: mysecret
+                          key: db 
+                  - name: MYSQL_PASSWORD
+                    valueFrom: 
+                       secretKeyRef: 
+                          name: mysecret
+                          key: up
